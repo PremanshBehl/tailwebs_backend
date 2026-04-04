@@ -15,16 +15,13 @@ const app = express();
 
 // Middleware
 app.use(cors({
-  origin: process.env.NODE_ENV === 'production' 
-    ? process.env.CLIENT_URL 
-    : (reqOrigin, callback) => {
-        // Allow any localhost origin in development
-        if (!reqOrigin || reqOrigin.startsWith('http://localhost:')) {
-          callback(null, true);
-        } else {
-          callback(new Error('Not allowed by CORS'));
-        }
-      },
+  origin: (reqOrigin, callback) => {
+    if (!reqOrigin || reqOrigin.includes('localhost') || reqOrigin.includes('vercel.app') || reqOrigin === process.env.CLIENT_URL) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   credentials: true
 }));
 app.use(express.json({ limit: '10mb' }));
