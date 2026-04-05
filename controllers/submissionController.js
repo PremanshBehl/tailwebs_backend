@@ -37,7 +37,11 @@ const createSubmission = async (req, res) => {
     let originalFileName = null;
 
     if (req.file) {
-      fileUrl = req.file.path;
+      if (req.file.path.startsWith('http')) {
+        fileUrl = req.file.path;
+      } else {
+        fileUrl = `${req.protocol}://${req.get('host')}/uploads/${req.file.filename}`;
+      }
       originalFileName = req.file.originalname;
     }
 

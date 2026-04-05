@@ -11,7 +11,12 @@ const createAssignment = async (req, res) => {
     let originalFileName = null;
 
     if (req.file) {
-      fileUrl = req.file.path;
+      if (req.file.path.startsWith('http')) {
+        fileUrl = req.file.path; // Cloudinary URL
+      } else {
+        // Local path: construct web URL
+        fileUrl = `${req.protocol}://${req.get('host')}/uploads/${req.file.filename}`;
+      }
       originalFileName = req.file.originalname;
     }
 
@@ -150,7 +155,11 @@ const updateAssignment = async (req, res) => {
       if (description) updateData.description = description;
       if (dueDate) updateData.dueDate = dueDate;
       if (req.file) {
-        updateData.fileUrl = req.file.path;
+        if (req.file.path.startsWith('http')) {
+          updateData.fileUrl = req.file.path;
+        } else {
+          updateData.fileUrl = `${req.protocol}://${req.get('host')}/uploads/${req.file.filename}`;
+        }
         updateData.originalFileName = req.file.originalname;
       }
     }

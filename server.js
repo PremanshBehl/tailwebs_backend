@@ -11,7 +11,11 @@ const submissionRoutes = require('./routes/submissions');
 // Connect to MongoDB
 connectDB();
 
+const path = require('path');
 const app = express();
+
+// Serve local uploads
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Middleware
 app.use(cors({
