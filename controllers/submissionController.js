@@ -33,10 +33,24 @@ const createSubmission = async (req, res) => {
       return res.status(400).json({ success: false, message: 'You have already submitted an answer for this assignment' });
     }
 
+    let fileUrl = null;
+    let originalFileName = null;
+
+    if (req.file) {
+      fileUrl = req.file.path;
+      originalFileName = req.file.originalname;
+    }
+
+    if (!answer && !fileUrl) {
+      return res.status(400).json({ success: false, message: 'You must provide a text answer or upload a file' });
+    }
+
     const submission = await Submission.create({
       assignment: assignmentId,
       student: req.user._id,
-      answer
+      answer: answer || '',
+      fileUrl,
+      originalFileName
     });
 
     // Increment submission count on assignment

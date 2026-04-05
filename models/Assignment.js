@@ -21,6 +21,14 @@ const assignmentSchema = new mongoose.Schema({
     enum: ['draft', 'published', 'completed'],
     default: 'draft'
   },
+  fileUrl: {
+    type: String,
+    default: null
+  },
+  originalFileName: {
+    type: String,
+    default: null
+  },
   teacher: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',

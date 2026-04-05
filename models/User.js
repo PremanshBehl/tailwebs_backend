@@ -25,6 +25,13 @@ const userSchema = new mongoose.Schema({
     type: String,
     enum: ['teacher', 'student'],
     required: [true, 'Role is required']
+  },
+  subject: {
+    type: String,
+    enum: ['maths', 'science', 'english', 'history', 'computer science', 'other'],
+    required: function() {
+      return this.role === 'teacher';
+    }
   }
 }, { timestamps: true });
 

@@ -7,11 +7,20 @@ const Submission = require('../models/Submission');
 const createAssignment = async (req, res) => {
   try {
     const { title, description, dueDate } = req.body;
+    let fileUrl = null;
+    let originalFileName = null;
+
+    if (req.file) {
+      fileUrl = req.file.path;
+      originalFileName = req.file.originalname;
+    }
 
     const assignment = await Assignment.create({
       title,
       description,
       dueDate,
+      fileUrl,
+      originalFileName,
       teacher: req.user._id
     });
 
@@ -140,6 +149,10 @@ const updateAssignment = async (req, res) => {
       if (title) updateData.title = title;
       if (description) updateData.description = description;
       if (dueDate) updateData.dueDate = dueDate;
+      if (req.file) {
+        updateData.fileUrl = req.file.path;
+        updateData.originalFileName = req.file.originalname;
+      }
     }
 
     assignment = await Assignment.findByIdAndUpdate(req.params.id, updateData, {

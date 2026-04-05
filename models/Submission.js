@@ -13,8 +13,15 @@ const submissionSchema = new mongoose.Schema({
   },
   answer: {
     type: String,
-    required: [true, 'Answer is required'],
     maxlength: [5000, 'Answer cannot exceed 5000 characters']
+  },
+  fileUrl: {
+    type: String,
+    default: null
+  },
+  originalFileName: {
+    type: String,
+    default: null
   },
   reviewed: {
     type: Boolean,
