@@ -13,7 +13,7 @@ const protect = async (req, res, next) => {
       return res.status(401).json({ success: false, message: 'Not authorized – no token provided' });
     }
 
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const decoded = jwt.verify(token, process.env.JWT_SECRET || 'tailwebs_secret_key_123');
     const user = await User.findById(decoded.id);
 
     if (!user) {
